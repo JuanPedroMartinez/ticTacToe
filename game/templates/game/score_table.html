@@ -1,0 +1,42 @@
+<!-- En el archivo game_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game List</title>
+</head>
+<body>
+    <h1>Listado de Partidas Jugadas</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha de Creación</th>
+                <th>Ganador</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td>{{ game.id }}</td>
+                <td>{{ game.created_at }}</td>
+                <td>{{ game.winner }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Número de Victorias:</h2>
+    <p>Jugador X: {{ wins.win_X }}</p>
+    <p>Jugador O: {{ wins.win_O }}</p>
+    <p>Empates: {{ wins.draw_E }}</p>
+
+    <form id="new_game" method="post" action="{% url 'new_game' %}">
+        {% csrf_token %}
+        <button type="submit">New game</button>
+    </form>
+
+</body>
+</html>

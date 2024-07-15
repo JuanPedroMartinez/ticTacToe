@@ -1,0 +1,97 @@
+<!-- templates/game/board.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic-Tac-Toe Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .game-container {
+            display: inline-block;
+            margin-top: 50px;
+            border: 2px solid #333;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .game-info {
+            margin-bottom: 20px;
+        }
+
+        .game-info h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .game-info p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px); /* Tres columnas de 100px de ancho cada una */
+            grid-gap: 10px; /* Espacio entre celdas */
+            width: 320px; /* Ancho total del tablero */
+            margin: 0 auto;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cell:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <div class="game-info">
+        <h1>Tic-Tac-Toe Game</h1>
+        <p>Game ID: {{ game.id }}</p>
+        <p>Next to move: {{ game.next_turn }}</p>
+        <p>Status: {{ game_status }}</p>
+    </div>
+
+    <div class="board">
+        {% for cell in game.board %}
+            <div class="cell" onclick="makeMove(this)" data-index="{{ forloop.counter0 }}">
+                {{ cell }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <form id="make-move-form" method="post" action="{% url 'play' game.id %}">
+        {% csrf_token %}
+        <input type="hidden" id="position" name="position">
+    </form>
+</div>
+
+<script>
+    function makeMove(cell) {
+        var index = cell.getAttribute('data-index');
+
+        if (cell.textContent.trim() === '-') {
+            document.getElementById('position').value = index;
+            document.getElementById('make-move-form').submit();
+        }
+    }
+</script>
+
+</body>
+</html>

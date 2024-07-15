@@ -1,0 +1,16 @@
+<!-- templates/game/new_game.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Tic-Tac-Toe Game</title>
+</head>
+<body>
+    <h1>New Tic-Tac-Toe Game</h1>
+    <form id="new-game-form" method="post" action="{% url 'new_game' %}">
+        {% csrf_token %}
+        <button type="submit">Start New Game</button>
+    </form>
+</body>
+</html>

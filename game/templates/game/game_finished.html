@@ -1,0 +1,48 @@
+<!-- templates/game/game_finish.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Finish</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .game-info {
+            margin-top: 50px;
+        }
+
+        .game-info h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .game-info p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-info">
+        <h1>Game Finished</h1>
+        {% if game.winner %}
+            <p>Winner: {{ game.winner }}</p>
+        {% else %}
+            <p>It's a draw!</p>
+        {% endif %}
+    </div>
+    <form id="new-game-form" method="post" action="{% url 'new_game' %}">
+        {% csrf_token %}
+        <button type="submit">Start New Game</button>
+    </form>
+    <form id="score_table" method="post" action="{% url 'score_table' %}">
+        {% csrf_token %}
+        <button type="submit">Show scores</button>
+    </form>
+
+</body>
+</html>
