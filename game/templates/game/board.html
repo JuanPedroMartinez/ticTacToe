@@ -57,7 +57,11 @@
         .cell:hover {
             background-color: #e0e0e0;
         }
+        button  {
+            margin-top: 20px;
+        }
     </style>
+
 </head>
 <body>
 <div class="game-container">
@@ -65,7 +69,6 @@
         <h1>Tic-Tac-Toe Game</h1>
         <p>Game ID: {{ game.id }}</p>
         <p>Next to move: {{ game.next_turn }}</p>
-        <p>Status: {{ game_status }}</p>
     </div>
 
     <div class="board">
@@ -80,6 +83,8 @@
         {% csrf_token %}
         <input type="hidden" id="position" name="position">
     </form>
+<button id="goHome" onclick="location.href='{% url 'homePage' %}'">Go home</button>
+
 </div>
 
 <script>

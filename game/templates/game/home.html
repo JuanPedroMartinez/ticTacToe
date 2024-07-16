@@ -1,0 +1,70 @@
+<!-- templates/game/new_game.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic-Tac-Toe Game</title>
+</head>
+<body>
+    <h1>Tic-Tac-Toe Game</h1>
+    <form id="new-game-form" method="post" action="{% url 'new_game' %}">
+        {% csrf_token %}
+        <button type="submit">Start New Game</button>
+    </form>
+    <h2>Register</h2>
+    <button id="goHome" onclick="location.href='{% url 'register' %}'">Register</button>
+
+    {% if user.is_authenticated %}
+    <h2>Usuario</h2>
+    <p>{{ user.username }}&nbsp;&nbsp;
+       <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </p>
+
+        <table>
+        <thead>
+            <tr>
+                <th>Game ID</th>
+                <th>Status</th>
+                <th>Winner</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td>{{ game.id }}</td>
+                 <td>
+                    {% for status_code, status_text in game.GAME_STATUS %}
+                        {% if status_code == game.next_turn %}
+                            {{ status_text }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ game.winner }}</td>
+                <td>
+                {% if game.next_turn == 'X' or game.next_turn == 'O' %}
+                    <a href="{% url 'board' game.id %}">Continuar</a>
+
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Número de Victorias:</h2>
+    <p>Jugador X: {{ wins.win_X }}</p>
+    <p>Jugador O: {{ wins.win_O }}</p>
+    <p>Empates: {{ wins.draw_E }}</p>
+    {% else %}
+
+    <h2>Login</h2>
+        <button id="goLogin" onclick="location.href='{% url 'login' %}'">Login</button>
+    {% endif %}
+
+</body>
+</html>

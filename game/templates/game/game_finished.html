@@ -39,10 +39,9 @@
         {% csrf_token %}
         <button type="submit">Start New Game</button>
     </form>
-    <form id="score_table" method="post" action="{% url 'score_table' %}">
-        {% csrf_token %}
-        <button type="submit">Show scores</button>
-    </form>
+
+    <button  onclick="location.href='{% url 'homePage' %}'">Go home</button>
+
 
 </body>
 </html>
