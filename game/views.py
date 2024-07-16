@@ -7,20 +7,27 @@ from .models import Game
 from .services import getGamesForUser
 from .utils import is_winner, is_draw, count_wins
 
+
 # Create your views here.
 
 def homePage(request):
     userGames = getGamesForUser(request.user)
     wins = count_wins(request.user)
-    return render(request, 'game/home.html', {'games':userGames, 'wins':wins})
+    return render(request, 'game/home.html', {'games': userGames, 'wins': wins})
+
+
 def new_game(request):
     if request.method == 'POST':
-        game = Game.objects.create(user=request.user)
+        if request.user.is_authenticated:
+            game = Game.objects.create(user=request.user)
+        else:
+            game = Game.objects.create()
         return redirect('board', game_id=game.id)
     return render(request, 'game/home.html')
 
+
 def play(request, game_id):
-    game = get_object_or_404(Game, id=game_id) #recuperamos el juego y devolvemos 404 si no existe.
+    game = get_object_or_404(Game, id=game_id)  # recuperamos el juego y devolvemos 404 si no existe.
     if request.method == 'POST':
         position = int(request.POST.get('position'))
         board = list(game.board)
@@ -38,7 +45,7 @@ def play(request, game_id):
 
 def board(request, game_id):
     game = get_object_or_404(Game, id=game_id)
-    if is_winner(game.board ):  # Comprobamos si se ha producido la victoria
+    if is_winner(game.board):  # Comprobamos si se ha producido la victoria
         game.winner = game.next_turn
         game.next_turn = 'T'
         game.save()
@@ -50,7 +57,7 @@ def board(request, game_id):
 
     return render(request, 'game/board.html', {'game': game})
 
+
 def game_finished(request, game_id):
     game = get_object_or_404(Game, id=game_id)
     return render(request, 'game/game_finished.html', {'game': game})
-
